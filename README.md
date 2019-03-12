@@ -58,5 +58,5 @@ for vol in Volume.names():
   print(vol, vol.barcode(), vol.isonline(), vol.label(), vol.mediatype())
 ```
 
-Depending on your personal preference import the modules in with Capital letters
-or in lowercase.
+Depending on your personal preference import the modules using capital or
+lowercase letters.
