@@ -26,7 +26,7 @@ You will also need Archiware P5 installed on your system. py-awp5 is using the n
 
 install py-awp5 directly from GitHub using pip:
 ```
-pip install git+https://github.com/ThomasWaldinger/py-awp5
+pip install git+https://github.com/ThomasWaldinger/py_awp5
 ```
 
 ### Usage
