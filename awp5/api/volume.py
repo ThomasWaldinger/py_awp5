@@ -186,6 +186,18 @@ def inventory(volume_name, outputfile, options=[],  p5_connection=None):
                         options], p5_connection)
 
 
+def jobs(volume_name, p5_connection=None):
+    """
+    Syntax: Volume <name> jobs
+    Description: Returns a list of job ids which accessed volume <name>
+    The job ids can be used in a job command to get info about that job.
+    Return Values:
+    -On Success:    the job list
+    """
+    method_name = "jobs"
+    return exec_nsdchat([module_name, volume_name, method_name], p5_connection)
+
+
 @onereturnvalue
 def label(volume_name, value="", p5_connection=None):
     """
@@ -522,6 +534,18 @@ class Volume(P5Resource):
         return self.p5_connection.nsdchat_call([module_name, self.name,
                                                 method_name, outputfile,
                                                 options])
+
+    def jobs(self):
+        """
+        Syntax: Volume <name> jobs
+        Description: Returns a list of job ids which accessed volume <name>
+        The job ids can be used in a job command to get info about that job.
+        Return Values:
+        -On Success:    the job list
+        """
+        method_name = "isonline"
+        return self.p5_connection.nsdchat_call([module_name, self.name,
+                                                method_name])
 
     @onereturnvalue
     def label(self, value=None):

@@ -9,7 +9,7 @@ import logging
 from .base.connection import Connection
 
 __all__ = ["base", "api"]
-cli_version="5.5"
+cli_version="5.6.3"
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 fh = logging.FileHandler('awp5_cli.log')

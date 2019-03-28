@@ -85,6 +85,27 @@ def addentry(restoreselection_name, archiveentry, path=None,
 
 
 @onereturnvalue
+def addfrom(restoreselection_name, inputfile,
+             p5_connection=None):
+    """
+    Description: Loads the Restore Selection entries from the external file
+    <input file>. The file must be formatted with one entry per line, each
+    entry in the format of:
+    <archiveentry>[TAB<relocate path>]
+    The <archiveentry> is a handle to the archived file as returned by
+    ArchiveSelection addentry.
+    In case a <relocate path> is given, the archived file or folder is
+    restored at the given path. Otherwise the relocate path as given in the
+    RestoreSelection is used.
+    Return Values:
+    -On Success:    The count of entries that will be restored
+    """
+    method_name = "addfrom"
+    return exec_nsdchat([module_name, restoreselection_name, method_name,
+                         inputfile], p5_connection)
+
+
+@onereturnvalue
 def describe(restoreselection_name, title=None, p5_connection=None):
     """
     Syntax: RestoreSelection <name> describe [title]
@@ -230,6 +251,19 @@ def onjobcompletion(restoreselection_name, command=None, p5_connection=None):
 
 
 @onereturnvalue
+def size(restoreselection_name, p5_connection=None):
+    """
+    Syntax: RestoreSelection <name> size
+    Description: Returns the summed up size in bytes of all files to restore.
+    Return Values:
+    -On Success:    the size in bytes
+    """
+    method_name = "size"
+    return exec_nsdchat([module_name, restoreselection_name, method_name],
+                        p5_connection)
+
+
+@onereturnvalue
 def submit(restoreselection_name, when=None, as_object=False,
            p5_connection=None):
     """
@@ -323,6 +357,24 @@ class RestoreSelection(P5Resource):
                                                 method_name, archiveentry,
                                                 path])
 
+    @onereturnvalue
+    def addfrom(self, inputfile):
+        """
+        Description: Loads the Restore Selection entries from the external file
+        <input file>. The file must be formatted with one entry per line, each
+        entry in the format of:
+        <archiveentry>[TAB<relocate path>]
+        The <archiveentry> is a handle to the archived file as returned by
+        ArchiveSelection addentry.
+        In case a <relocate path> is given, the archived file or folder is
+        restored at the given path. Otherwise the relocate path as given in the
+        RestoreSelection is used.
+        Return Values:
+        -On Success:    The count of entries that will be restored
+        """
+        method_name = "addfrom"
+        return self.p5_connection.nsdchat_call([module_name, self.name,
+                                                method_name, inputfile])
     @onereturnvalue
     def describe(self, title=None):
         """
@@ -461,6 +513,19 @@ class RestoreSelection(P5Resource):
         method_name = "onjobcompletion"
         return self.p5_connection.nsdchat_call([module_name, self.name,
                                                 method_name, command])
+
+    @onereturnvalue
+    def size(self):
+        """
+        Syntax: RestoreSelection <name> size
+        Description: Returns the summed up size in bytes of all files to
+        restore.
+        Return Values:
+        -On Success:    the size in bytes
+        """
+        method_name = "size"
+        return self.p5_connection.nsdchat_call([module_name, self.name,
+                                                method_name])
 
     @onereturnvalue
     def submit(self, when=None, as_object=True):

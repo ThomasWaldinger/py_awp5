@@ -117,8 +117,8 @@ def addentry(archiveselection_name, path, key_value_list=None, as_object=False,
     blanks, it should be enclosed in curly braces. If the value itself contains
     curly braces, you must escape them with '\' character.
     In case the ArchiveSelection is set to incremental level and the given
-    entry is already part of the Archive, the entry is not added and an empty
-    string is returned.
+    entry is already part of the Archive, the entry is not added and an string
+    string <empty> is returned.
 
     Return Values:
     -On Success:    the name of the new ArchiveEntry resource.
@@ -319,6 +319,19 @@ def destroy(archiveselection_name, p5_connection=None):
 
 
 @onereturnvalue
+def entries(archiveselection_name, p5_connection=None):
+    """
+    Syntax: ArchiveSelection <name> entires
+    Description: Returns the number of entries in the selection object.
+    Return Values:
+    -On Success:    the number of entries
+    """
+    method_name = "size"
+    return exec_nsdchat([module_name, archiveselection_name, method_name],
+                        p5_connection)
+
+
+@onereturnvalue
 def level(archiveselection_name, level_value=None, p5_connection=None):
     """
     Syntax: ArchiveSelection <name> [level]
@@ -338,6 +351,7 @@ def size(archiveselection_name, p5_connection=None):
     """
     Syntax: ArchiveSelection <name> size
     Description: Returns the number of entries in the selection object.
+    This method is deprecated, please use ArchiveSelection entries instead.
     Return Values:
     -On Success:    the number of entries
     """
@@ -714,6 +728,18 @@ class ArchiveSelection(P5Resource):
                                                 method_name])
 
     @onereturnvalue
+    def entries(self):
+        """
+        Syntax: ArchiveSelection <name> entries
+        Description: Returns the number of entries in the selection object.
+        Return Values:
+        -On Success:    the number of entries
+        """
+        method_name = "entries"
+        return self.p5_connection.nsdchat_call([module_name, self.name,
+                                                method_name])
+
+    @onereturnvalue
     def level(self, level_value=None):
         """
         Syntax: ArchiveSelection <name> [level]
@@ -728,10 +754,11 @@ class ArchiveSelection(P5Resource):
                                                 method_name, level_value])
 
     @onereturnvalue
-    def size():
+    def size(self):
         """
         Syntax: ArchiveSelection <name> size
         Description: Returns the number of entries in the selection object.
+        This method is deprecated, please use ArchiveSelection entries instead.
         Return Values:
         -On Success:    the number of entries
         """
