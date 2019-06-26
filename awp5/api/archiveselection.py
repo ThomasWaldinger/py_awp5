@@ -453,7 +453,7 @@ class ArchiveSelection(P5Resource):
         super().__init__(archiveselection_name, p5_connection)
 
     @onereturnvalue
-    def create(syncplan=None, as_objects=False, p5_connection=None):
+    def create(client, plan, indexroot=None, as_objects=True, p5_connection=None):
         """
         Syntax: ArchiveSelection create <client> <plan> [<indexroot>]
         Description: Creates a new temporary archive selection resource. The
