@@ -60,6 +60,18 @@ def copyof(volume_name, p5_connection=None):
 
 
 @onereturnvalue
+def dateexpires(volume_name, p5_connection=None):
+    """Syntax: Volume <name> dateexpires
+    Description: Returns the date when the volume will exxpire and can be
+    relabeled in seconds since Jan 01, 1970 (Posix time).
+    Return Values:
+    -On Success:    the date in seconds (Posix time)
+    """
+    method_name = "dateexpires"
+    return exec_nsdchat([module_name, volume_name, method_name], p5_connection)
+
+
+@onereturnvalue
 def dateused(volume_name, p5_connection=None):
     """Syntax: Volume <name> dateused
     Description: Returns the date when the volume was last used (for reading or
@@ -404,6 +416,18 @@ class Volume(P5Resource):
         return self.p5_connection.nsdchat_call([module_name, self.name,
                                                 method_name])
 
+    @onereturnvalue
+    def dateexpires(self):
+        """Syntax: Volume <name> dateexpires
+        Description: Returns the date when the volume will exxpire and can be
+        relabeled in seconds since Jan 01, 1970 (Posix time).
+        Return Values:
+        -On Success:    the date in seconds (Posix time)
+        """
+        method_name = "dateexpires"
+        return self.p5_connection.nsdchat_call([module_name, self.name,
+                                                method_name])
+                                                
     @onereturnvalue
     def dateused(self):
         """Syntax: Volume <name> dateused

@@ -46,8 +46,13 @@ def create(pool_name, option_value_list=None, as_object=False,
     Options supported by this command are:
     usage           one of Archive or Backup
     mediatype       one of TAPE or DISK
+    blocksize       count 
     If no optional arguments are given, the newly created pool will be assigned
     Archive  for usage and TAPE for media type.
+    The new option blocksize <count> allows to specify blocksize for all volumes
+    labeled for this pool. The <count> parameter can be as low as 32768 (32K) 
+    and as high as 524288 (512K) but it must be one of: 
+    32768, 65536, 131072, 262144, 524288 
     The newly created pool will be configured for no parallelism i.e. it will
     use only one media-device for writing and/or reading the media. If you need
     to configure the pool for parallelism, please use the P5 Web-GUI.
@@ -57,7 +62,7 @@ def create(pool_name, option_value_list=None, as_object=False,
     -On Success:    the name of the created pool
     """
     method_name = "create"
-    result = exec_nsdchat([module_name, method_name, description,
+    result = exec_nsdchat([module_name, method_name, pool_name,
                            option_value_list], p5_connection)
     if as_object is False:
         return result
@@ -66,7 +71,7 @@ def create(pool_name, option_value_list=None, as_object=False,
 
 
 @onereturnvalue
-def disabled(volume_name, p5_connection=None):
+def disabled(pool_name, p5_connection=None):
     """
     Syntax: Pool <name> disabled
     Description: Queries the pool Disabled status
@@ -74,24 +79,37 @@ def disabled(volume_name, p5_connection=None):
     -On Success:    the "1" (the pool is disabled) or "0" (not disabled)
     """
     method_name = "disabled"
-    return exec_nsdchat([module_name, volume_name, method_name],
+    return exec_nsdchat([module_name, pool_name, method_name],
                         p5_connection)
 
 
 @onereturnvalue
-def enabled(volume_name, p5_connection=None):
+def drivecount(pool_name, count=None, p5_connection=None):
+    """
+    Syntax: Pool <name> drivecount <count>
+    Description: Sets the drives per stream the pool is allowed to use
+    Return Values:
+    -On Success:    the drivecount as string
+    """
+    method_name = "drivecount"
+    return exec_nsdchat([module_name, pool_name, method_name, count],
+                        p5_connection)
+
+                           
+@onereturnvalue
+def enabled(pool_name, p5_connection=None):
     """
     Syntax: Pool <name> enabled
     Description: Queries the pool Enabled status.
     Return Values:
     -On Success:    the string “1" (enabled) or "0" (not enabled)
     """
-    method_name = "enabled"
-    return exec_nsdchat([module_name, volume_name, method_name], p5_connection)
+    method_name = "drivecount"
+    return exec_nsdchat([module_name, pool_name, method_name], p5_connection)
 
 
 @onereturnvalue
-def mediatype(volume_name, p5_connection=None):
+def mediatype(pool_name, p5_connection=None):
     """
     Syntax: Pool <name> mediatype
     Description: returns one of TAPE or DISK designating the media type of
@@ -100,11 +118,11 @@ def mediatype(volume_name, p5_connection=None):
     -On Success:    the media-type as a string
     """
     method_name = "mediatype"
-    return exec_nsdchat([module_name, volume_name, method_name], p5_connection)
+    return exec_nsdchat([module_name, pool_name, method_name], p5_connection)
 
 
 @onereturnvalue
-def totalsize(volume_name, p5_connection=None):
+def totalsize(pool_name, p5_connection=None):
     """
     Syntax: Pool <name> totalsize
     Description: Returns the estimated capacity for the pool <name> in kbytes.
@@ -114,11 +132,11 @@ def totalsize(volume_name, p5_connection=None):
     -On Success:    the number of kbytes
     """
     method_name = "totalsize"
-    return exec_nsdchat([module_name, volume_name, method_name], p5_connection)
+    return exec_nsdchat([module_name, pool_name, method_name], p5_connection)
 
 
 @onereturnvalue
-def usage(volume_name, p5_connection=None):
+def usage(pool_name, p5_connection=None):
     """
     Syntax: Pool <name> usage
     Description: Returns either Archive or Backup
@@ -126,11 +144,11 @@ def usage(volume_name, p5_connection=None):
     -On Success:    the usage as a string
     """
     method_name = "usage"
-    return exec_nsdchat([module_name, volume_name, method_name], p5_connection)
+    return exec_nsdchat([module_name, pool_name, method_name], p5_connection)
 
 
 @onereturnvalue
-def usedsize(volume_name, p5_connection=None):
+def usedsize(pool_name, p5_connection=None):
     """
     Syntax: Pool <name> usedsize
     Description: Returns the number of kbytes currently written to the pool
@@ -140,10 +158,10 @@ def usedsize(volume_name, p5_connection=None):
     -On Success:    the number of kbytes written
     """
     method_name = "usedsize"
-    return exec_nsdchat([module_name, volume_name, method_name], p5_connection)
+    return exec_nsdchat([module_name, pool_name, method_name], p5_connection)
 
 
-def volumes(volume_name, as_object=False, p5_connection=None):
+def volumes(pool_name, as_object=False, p5_connection=None):
     """
     Syntax: Pool <name> volumes
     Description: Lists all labeled volumes for the given pool
@@ -152,7 +170,7 @@ def volumes(volume_name, as_object=False, p5_connection=None):
                     the string "<empty>" if the pool has no volumes
     """
     method_name = "volumes"
-    result = exec_nsdchat([module_name, volume_name, method_name],
+    result = exec_nsdchat([module_name, pool_name, method_name],
                           p5_connection)
     if as_object is False:
         return result
@@ -191,8 +209,13 @@ class Pool(P5Resource):
         Options supported by this command are:
         usage           one of Archive or Backup
         mediatype       one of TAPE or DISK
+        blocksize       count 
         If no optional arguments are given, the newly created pool will be
         assigned Archive  for usage and TAPE for media type.
+        The new option blocksize <count> allows to specify blocksize for all 
+        volumes labeled for this pool. The <count> parameter can be as low as 
+        32768 (32K) and as high as 524288 (512K) but it must be one of: 
+        32768, 65536, 131072, 262144, 524288 
         The newly created pool will be configured for no parallelism i.e. it
         will use only one media-device for writing and/or reading the media. If
         you need to configure the pool for parallelism, please use the P5
@@ -203,8 +226,8 @@ class Pool(P5Resource):
         -On Success:    the name of the created pool
         """
         method_name = "create"
-        result = p5_connection.nsdchat_call([module_name, method_name,
-                                            description, option_value_list])
+        result = exec_nsdchat([module_name, method_name, pool_name,
+                               option_value_list], p5_connection)
         if as_object is False:
             return result
         else:
@@ -221,6 +244,18 @@ class Pool(P5Resource):
         method_name = "disabled"
         return self.p5_connection.nsdchat_call([module_name, self.name,
                                                 method_name])
+
+    @onereturnvalue
+    def drivecount(self, count=None):
+        """
+        Syntax: Pool <name> drivecount <count>
+        Description: Sets the drives per stream the pool is allowed to use
+        Return Values:
+        -On Success:    the drivecount as string
+        """
+        method_name = "drivecount"
+        return self.p5_connection.nsdchat_call([module_name, self.name,
+                                                method_name, count])
 
     @onereturnvalue
     def enabled(self):

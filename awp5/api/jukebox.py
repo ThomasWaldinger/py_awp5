@@ -73,6 +73,42 @@ def inventory(jukebox_name, barcode=True, startSlot=None, endSlot=None,
 
 
 @onereturnvalue
+def label(jukebox_name, pool, slotid, as_object=False, p5_connection=None):
+    """
+    Syntax: Jukebox <name> label <pool> <slotID1> [<slotID2> … [<slotIDx>]]
+    Description: Labels media in the given jukebox for the given POOL starting
+    with slotID1, optionally including all of the slotIDs given on the command
+    line. Example: Jukebox changer0  label My-Archive 1 5 9
+    this command will label the volumes in slots 1, 5 and 9 for pool MyArchive.
+    Note that only new/empty volumes can be labeled with this  command.
+    Use the Job .. commands to monitor the ongoing label job.
+    Return values: 
+    -On Success:    the job Id of the label job 
+    """
+    method_name = "slotcount"
+    result = return exec_nsdchat([module_name, jukebox_name, method_name, pool,
+                                  slotid], p5_connection)
+    if not as_object:
+        return result
+    else:
+        return resourcelist(result, Job, p5_connection)
+
+
+@onereturnvalue
+def slotcount(jukebox_name, p5_connection=None):
+    """
+    Syntax: Jukebox <name> slotcount 
+    Description: Returns number of media slots in the given jukebox. The slots
+    in the Jukebox are addressed as 1 ... slotcount.
+    Return Values:
+    -On Success:    the number of media slots 
+    """
+    method_name = "slotcount"
+    return exec_nsdchat([module_name, jukebox_name, method_name],
+                        p5_connection)
+
+
+@onereturnvalue
 def reset(jukebox_name, p5_connection=None):
     """
     Syntax: Jukebox <name> reset
@@ -88,7 +124,7 @@ def reset(jukebox_name, p5_connection=None):
                         p5_connection)
 
 
-def volumes(jukebox_name, as_object=False, p5_connection=None):
+def volumes(jukebox_name, slot_id=[], as_object=False, p5_connection=None):
     """
     Syntax: Jukebox <name> volumes
     Description: Returns a list of all volumes currently loaded in the <name>
@@ -98,7 +134,7 @@ def volumes(jukebox_name, as_object=False, p5_connection=None):
     -On Success:    the list of volume names
     """
     method_name = "volumes"
-    result = exec_nsdchat([module_name, jukebox_name, method_name],
+    result = exec_nsdchat([module_name, jukebox_name, method_name, slot_id],
                           p5_connection)
     if not as_object:
         return result
@@ -160,6 +196,40 @@ class Jukebox(P5Resource):
         else:
             return resourcelist(result, Job, self.p5_connection)
 
+@onereturnvalue
+def label(self, pool, slotid, as_object=True):
+    """
+    Syntax: Jukebox <name> label <pool> <slotID1> [<slotID2> … [<slotIDx>]]
+    Description: Labels media in the given jukebox for the given POOL starting
+    with slotID1, optionally including all of the slotIDs given on the command
+    line. Example: Jukebox changer0  label My-Archive 1 5 9
+    this command will label the volumes in slots 1, 5 and 9 for pool MyArchive.
+    Note that only new/empty volumes can be labeled with this  command.
+    Use the Job .. commands to monitor the ongoing label job.
+    Return values: 
+    -On Success:    the job Id of the label job 
+    """
+    method_name = "slotcount"
+    result = return self.p5_connection.nsdchat_call([module_name, self.name, 
+                                                     method_name, pool, slotid])
+    if not as_object:
+        return result
+    else:
+        return resourcelist(result, Job, p5_connection)
+
+    @onereturnvalue
+    def slotcount(jukebox_name):
+        """
+        Syntax: Jukebox <name> slotcount 
+        Description: Returns number of media slots in the given jukebox. The 
+        slots in the Jukebox are addressed as 1 ... slotcount.
+        Return Values:
+        -On Success:    the number of media slots 
+        """
+        method_name = "slotcount"
+        return self.p5_connection.nsdchat_call([module_name, self.name,
+                                                method_name])
+
     @onereturnvalue
     def reset(self):
         """
@@ -175,7 +245,7 @@ class Jukebox(P5Resource):
         return self.p5_connection.nsdchat_call([module_name, self.name,
                                                 method_name])
 
-    def volumes(self, as_object=True):
+    def volumes(self, slot_id=[], as_object=True):
         """
         Syntax: Jukebox <name> volumes
         Description: Returns a list of all volumes currently loaded in the
@@ -186,7 +256,7 @@ class Jukebox(P5Resource):
         """
         method_name = "volumes"
         result = self.p5_connection.nsdchat_call([module_name, self.name,
-                                                  method_name])
+                                                  method_name, slot_id])
         if not as_object:
             return result
         else:
