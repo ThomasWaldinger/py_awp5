@@ -86,7 +86,7 @@ def label(jukebox_name, pool, slotid, as_object=False, p5_connection=None):
     -On Success:    the job Id of the label job 
     """
     method_name = "slotcount"
-    result = return exec_nsdchat([module_name, jukebox_name, method_name, pool,
+    result = exec_nsdchat([module_name, jukebox_name, method_name, pool,
                                   slotid], p5_connection)
     if not as_object:
         return result
@@ -210,7 +210,7 @@ def label(self, pool, slotid, as_object=True):
     -On Success:    the job Id of the label job 
     """
     method_name = "slotcount"
-    result = return self.p5_connection.nsdchat_call([module_name, self.name, 
+    result = self.p5_connection.nsdchat_call([module_name, self.name, 
                                                      method_name, pool, slotid])
     if not as_object:
         return result
