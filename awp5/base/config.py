@@ -13,14 +13,18 @@ Username and Password will most like need to be set.
 import sys
 
 p5_user = 'Administrator'
+
 p5_pass = 'password'
+
 p5_ip = '127.0.0.1'
 """The Ip Address to the P5 Server / Client to connect to"""
+
 p5_port_nr = 8000
 """
 The Port-Number as in config/lexxsrv.xxxx. The value will be incrementet by
 1001 for the CLI access
 """
+
 p5_path = r'C:\Program Files\ARCHIWARE\Data_Lifecycle_Management_Suite'
 """The Filepath to the Archiware P5 Installation Directory."""
 if sys.platform == 'win32':

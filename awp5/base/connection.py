@@ -15,6 +15,7 @@ import subprocess
 import errno
 import logging
 import os
+import locale
 from awp5.base import config
 from awp5.base.helpers import strings, defaultIfNotSet, singlevalue
 
@@ -146,11 +147,14 @@ class Connection(ConnectionBase):
         process = subprocess.Popen(
             c, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = process.communicate(timeout=timeout)
-        if (process.returncode != 0 and out.strip == ''):
+        if (process.returncode != 0 and out.strip() == ''):
             Connection.logger.error("P5 error while executing '{}'".format(cmd))
             Connection.logger.error(self.geterror())
             return None
-        res = out.decode('utf-8').strip().split(' ')
+        try:
+            res = out.decode('utf-8').strip().split(' ')
+        except UnicodeDecodeError:
+            res = out.decode(locale.getpreferredencoding()).strip().split(' ')
         Connection.last_connection = self
         return res
 
