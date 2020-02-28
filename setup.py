@@ -8,7 +8,7 @@
 from setuptools import setup, find_packages
 
 setup(name='awp5',
-      version='0.1.3',
+      version='0.1.4',
       url='https://github.com/ThomasWaldinger/awp5',
       license='LICENSE.txt',
       author='Thomas Waldinger',

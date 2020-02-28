@@ -134,7 +134,11 @@ class Connection(ConnectionBase):
         c = [self.nsdchat, '-s', self.connection_string, '-c', 'geterror']
         process = subprocess.Popen(
                 c, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = process.communicate()
+        try:
+            out, err = process.communicate()
+        except subprocess.TimeoutExpired:
+            process.kill()
+            raise
         if (process.returncode != 0):
             Connection.logger.error("nsdchat exited with errorcode "
                                     "{rc}.".format(rc=process.returncode))
@@ -146,7 +150,11 @@ class Connection(ConnectionBase):
         c = nsdcmd + strings(cmd)
         process = subprocess.Popen(
             c, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = process.communicate(timeout=timeout)
+        try:
+            out, err = process.communicate(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            raise
         if (process.returncode != 0 and out.strip() == ''):
             Connection.logger.error("P5 error while executing '{}'".format(cmd))
             Connection.logger.error(self.geterror())

@@ -171,7 +171,7 @@ class BackupPlan(P5Resource):
     def __init__(self, backupplan_name, p5_connection=None):
         super().__init__(backupplan_name, p5_connection)
 
-    def names(as_objects=True, p5_connection=None):
+    def names(as_object=True, p5_connection=None):
         """
         Syntax: BackupPlan names
         Description: Returns a list of names of all the BackupPlan resources

@@ -22,7 +22,7 @@ module_name = "ArchiveEntry"
 
 
 @onereturnvalue
-def handle(client, path, database=None, as_objects=False, p5_connection=None):
+def handle(client, path, database=None, as_object=False, p5_connection=None):
     """
     Syntax: ArchiveEntry handle <client> <path> [<database>]
     Description: Returns the properly formatted archive entry handle which can
@@ -43,7 +43,7 @@ def handle(client, path, database=None, as_objects=False, p5_connection=None):
     method_name = "handle"
     result = exec_nsdchat([module_name, method_name, client, path, database],
                           p5_connection)
-    if not as_objects:
+    if not as_object:
         return result
     else:
         return resourcelist(result, ArchiveEntry, p5_connection)
@@ -202,7 +202,7 @@ class ArchiveEntry(P5Resource):
         super().__init__(archiveentry_name, p5_connection)
 
     @onereturnvalue
-    def handle(client, path, database=None, as_objects=True,
+    def handle(client, path, database=None, as_object=True,
                p5_connection=None):
         """
         Syntax: ArchiveEntry handle <client> <path> [<database>]
@@ -224,7 +224,7 @@ class ArchiveEntry(P5Resource):
         method_name = "handle"
         result = exec_nsdchat([module_name, method_name, client, path,
                                database], p5_connection)
-        if not as_objects:
+        if not as_object:
             return result
         else:
             return resourcelist(result, ArchiveEntry, p5_connection)

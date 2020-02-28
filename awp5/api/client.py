@@ -22,7 +22,7 @@ from awp5.base.helpers import resourcelist, onereturnvalue
 module_name = "Client"
 
 
-def names(as_objects=False, p5_connection=None):
+def names(as_object=False, p5_connection=None):
     """
     Syntax: Client <name> describe
     Description: Returns a human-readable description of the client <name>. If
@@ -33,7 +33,7 @@ def names(as_objects=False, p5_connection=None):
     """
     method_name = "names"
     result = exec_nsdchat([module_name, method_name], p5_connection)
-    if not as_objects:
+    if not as_object:
         return result
     else:
         return resourcelist(result, Client, p5_connection)
@@ -120,7 +120,7 @@ class Client(P5Resource):
     def __init__(self, client_name, p5_connection=None):
         super().__init__(client_name, p5_connection)
 
-    def names(as_objects=True, p5_connection=None):
+    def names(as_object=True, p5_connection=None):
         """
         Syntax: Client <name> describe
         Description: Returns a human-readable description of the client <name>.
@@ -131,7 +131,7 @@ class Client(P5Resource):
         """
         method_name = "names"
         result = exec_nsdchat([module_name, method_name], p5_connection)
-        if not as_objects:
+        if not as_object:
             return result
         else:
             return resourcelist(result, Client, p5_connection)

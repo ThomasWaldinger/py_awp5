@@ -56,7 +56,7 @@ def create(client, plan, indexroot=None, as_object=False,
     method_name = "create"
     result = exec_nsdchat([module_name, method_name, client, plan, indexroot],
                           p5_connection)
-    if not as_objects:
+    if not as_object:
         return result
     else:
         return resourcelist(result, ArchiveSelection, p5_connection)
@@ -130,7 +130,7 @@ def addentry(archiveselection_name, path, key_value_list=None, as_object=False,
     method_name = "addentry"
     result = exec_nsdchat([module_name, archiveselection_name, method_name,
                            path, key_value_list], p5_connection)
-    if not as_objects:
+    if not as_object:
         return result
     else:
         return resourcelist(result, ArchiveEntry, p5_connection)
@@ -168,7 +168,7 @@ def addentryabs(archiveselection_name, path, key_value_list=None,
     method_name = "addentryabs"
     result = exec_nsdchat([module_name, archiveselection_name, method_name,
                            path, key_value_list], p5_connection)
-    if not as_objects:
+    if not as_object:
         return result
     else:
         return resourcelist(result, ArchiveEntry, p5_connection)
@@ -199,7 +199,7 @@ def adddirectory(archiveselection_name, path, key_value_list=None,
     method_name = "adddirectory"
     result = exec_nsdchat([module_name, archiveselection_name, method_name,
                            path, key_value_list], p5_connection)
-    if not as_objects:
+    if not as_object:
         return result
     else:
         return resourcelist(result, ArchiveEntry, p5_connection)
@@ -229,7 +229,7 @@ def adddirectoryabs(archiveselection_name, path, key_value_list=None,
     method_name = "adddirectoryabs"
     result = exec_nsdchat([module_name, archiveselection_name, method_name,
                            path, key_value_list], p5_connection)
-    if not as_objects:
+    if not as_object:
         return result
     else:
         return resourcelist(result, ArchiveEntry, p5_connection)
@@ -256,7 +256,7 @@ def addfile(archiveselection_name, path, key_value_list=None,
     method_name = "addfile"
     result = exec_nsdchat([module_name, archiveselection_name, method_name,
                            path, key_value_list], p5_connection)
-    if not as_objects:
+    if not as_object:
         return result
     else:
         return resourcelist(result, ArchiveEntry, p5_connection)
@@ -282,7 +282,7 @@ def addfileabs(archiveselection_name, path, key_value_list=None,
     method_name = "addfileabs"
     result = exec_nsdchat([module_name, archiveselection_name, method_name,
                            path, key_value_list], p5_connection)
-    if not as_objects:
+    if not as_object:
         return result
     else:
         return resourcelist(result, ArchiveEntry, p5_connection)
@@ -453,7 +453,7 @@ class ArchiveSelection(P5Resource):
         super().__init__(archiveselection_name, p5_connection)
 
     @onereturnvalue
-    def create(client, plan, indexroot=None, as_objects=True, p5_connection=None):
+    def create(client, plan, indexroot=None, as_object=True, p5_connection=None):
         """
         Syntax: ArchiveSelection create <client> <plan> [<indexroot>]
         Description: Creates a new temporary archive selection resource. The
@@ -474,7 +474,7 @@ class ArchiveSelection(P5Resource):
         method_name = "create"
         result = exec_nsdchat([module_name, method_name, client, plan,
                                indexroot], p5_connection)
-        if not as_objects:
+        if not as_object:
             return result
         else:
             return resourcelist(result, ArchiveSelection, p5_connection)
@@ -547,8 +547,8 @@ class ArchiveSelection(P5Resource):
         method_name = "addentry"
         result = self.p5_connection.nsdchat_call([module_name, self.name,
                                                   method_name, path,
-                                                  key_value_list_option])
-        if not as_objects:
+                                                  key_value_list])
+        if not as_object:
             return result
         else:
             return resourcelist(result, ArchiveEntry, self.p5_connection)
@@ -584,8 +584,8 @@ class ArchiveSelection(P5Resource):
         method_name = "addentryabs"
         result = self.p5_connection.nsdchat_call([module_name, self.name,
                                                   method_name, path,
-                                                  key_value_list_option])
-        if not as_objects:
+                                                  key_value_list])
+        if not as_object:
             return result
         else:
             return resourcelist(result, ArchiveEntry, self.p5_connection)
@@ -614,8 +614,8 @@ class ArchiveSelection(P5Resource):
         method_name = "adddirectory"
         result = self.p5_connection.nsdchat_call([module_name, self.name,
                                                   method_name, path,
-                                                  key_value_list_option])
-        if not as_objects:
+                                                  key_value_list])
+        if not as_object:
             return result
         else:
             return resourcelist(result, ArchiveEntry, self.p5_connection)
@@ -643,8 +643,8 @@ class ArchiveSelection(P5Resource):
         method_name = "adddirectoryabs"
         result = self.p5_connection.nsdchat_call([module_name, self.name,
                                                   method_name, path,
-                                                  key_value_list_option])
-        if not as_objects:
+                                                  key_value_list])
+        if not as_object:
             return result
         else:
             return resourcelist(result, ArchiveEntry, self.p5_connection)
@@ -669,8 +669,8 @@ class ArchiveSelection(P5Resource):
         method_name = "addfile"
         result = self.p5_connection.nsdchat_call([module_name, self.name,
                                                   method_name, path,
-                                                  key_value_list_option])
-        if not as_objects:
+                                                  key_value_list])
+        if not as_object:
             return result
         else:
             return resourcelist(result, ArchiveEntry, self.p5_connection)
@@ -694,8 +694,8 @@ class ArchiveSelection(P5Resource):
         method_name = "addfileabs"
         result = self.p5_connection.nsdchat_call([module_name, self.name,
                                                   method_name, path,
-                                                  key_value_list_option])
-        if not as_objects:
+                                                  key_value_list])
+        if not as_object:
             return result
         else:
             return resourcelist(result, ArchiveEntry, self.p5_connection)
@@ -767,7 +767,7 @@ class ArchiveSelection(P5Resource):
                                                 method_name])
 
     @onereturnvalue
-    def submit(self, archiveselection_name, now=True, as_object=True):
+    def submit(self, now=True, as_object=True):
         """
         Syntax: ArchiveSelection <name> submit [<now>]
         Description: Submits the archive selection for execution. You can
