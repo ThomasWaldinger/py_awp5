@@ -61,6 +61,7 @@ class Connection(ConnectionBase):
     applications.
     """
     logger = logging.getLogger('awp5')
+    
 
     def __init__(self, p5_user=None, p5_pass=None,
                  p5_ip=None, p5_port_nr=None,
@@ -73,6 +74,8 @@ class Connection(ConnectionBase):
         self.debugMsg = False
         self.connection_string = None
         self.session_id = None
+        self.timeout = 10
+
         if not self.session_id:
             self.session_id = "_".join(["awp5", hashlib.sha224(str(time.time())
                                                                .encode('utf-8')
@@ -145,7 +148,9 @@ class Connection(ConnectionBase):
         else:
             return out.decode('utf-8')
 
-    def nsdchat_call(self, cmd, timeout=10):
+    def nsdchat_call(self, cmd, timeout=None):
+        if not timeout:
+            timeout = self.timeout
         nsdcmd = [self.nsdchat, '-s', self.getConnectionString(), '-c']
         c = nsdcmd + strings(cmd)
         process = subprocess.Popen(
