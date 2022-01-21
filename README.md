@@ -1,6 +1,8 @@
 # py-awp5
 
-A python wraper for the [Archiware P5 CLI](http://support.archiware.com/support/download/cli_5.5.0.pdf).
+A python wraper for the [Archiware P5 CLI](https://support.archiware.com/show/access-the-p5-command-line-interface-cli).
+
+Note: As of P5 Version 6 comes with a REST API. You should consider using to the REST Api instead.
 
 Simplifies the integration of the Archiware P5 Software in modern MAM and DAM Systems.
 
